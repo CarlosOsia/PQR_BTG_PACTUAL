@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.server.*;
 
+import java.time.*;
 import java.util.*;
 
 @Service
@@ -54,5 +55,17 @@ public class SolicitudServiceImpl implements SolicitudService {
             solicitudFound.setTipo(solicitud.getTipo());
         }
         return save(solicitudFound);
+    }
+
+    @Override
+    public Solicitud demand(String id, Solicitud solicitud) {
+        var solicitudFound = repository.findById(id).orElseThrow( ()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "solicitud #"+ id +" not found")
+        );
+        if (solicitudFound.getRespuesta() == null || solicitudFound.getFechaCreacion().isAfter(LocalDateTime.now().minusDays(5))){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "you must wait for the administrator's response or wait 5 days");
+        }
+        solicitud.setSolicitudPadre(solicitudFound);
+        return repository.save(solicitud);
     }
 }

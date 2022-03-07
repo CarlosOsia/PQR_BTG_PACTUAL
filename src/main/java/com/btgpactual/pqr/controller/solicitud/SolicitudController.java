@@ -34,6 +34,11 @@ public class SolicitudController {
         return service.save(solicitud);
     }
 
+    @PostMapping("reclamar/{id}")
+    public Solicitud reclamar(@PathVariable String id, @RequestBody Solicitud solicitud){
+        return service.demand(id, solicitud);
+    }
+
     @PatchMapping("/{id}")
     public Solicitud show(@PathVariable String id, @RequestBody Solicitud solicitud){
         return service.update(id, solicitud);

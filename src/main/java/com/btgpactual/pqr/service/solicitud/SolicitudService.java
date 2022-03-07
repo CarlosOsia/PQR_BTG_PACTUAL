@@ -9,4 +9,5 @@ public interface SolicitudService {
     Solicitud show(String id);
     Solicitud save(Solicitud solicitud);
     Solicitud update(String id, Solicitud solicitud);
+    Solicitud demand(String id, Solicitud solicitud);
 }
